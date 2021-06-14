@@ -6,76 +6,50 @@ import {
   DELETE_COMPLETED_TODOS,
   TOGGLE_ALL_TODOS,
 } from "../actions/types";
-  
-const addTodo = (state, text) => {
-  const newTodo = {
-    id: Date.now(),
-    title: text,
-    completed: false,
-  };
-  return [newTodo, ...state];
-};
 
-const deleteTodo = (state, id) => {
-  return state.filter(todo => todo.id !== id);
-};
-
-const editTodo = (state, { id, text, completed }) => {
-  return state.map(todo => {
-    if (todo.id === id) {
-      return {
-        id: id,
-        title: text,
-        completed: completed,
-      }
-    } else {
-      return todo
-    }
-  })
-};
-
-const toggleTodo = (state, { id, title, completed }) => {
-  return state.map(todo => {
-    if (todo.id === id) {
-      return {
-        id,
-        title,
-        completed
-      }
-    } else {
-      return todo
-    }
-  })
-};
-
-const deleteCompletedTodos = (state) => {
-  return state.filter((todo) => !todo.completed);
-};
-
-const toggleAll = (state, checked) => {
-  return state.map((todo) => {
-    todo.completed = checked;
-    return todo;
-  });
-};
-
-const todos = [];
-
-const todoReducer = (state = todos, { type, payload }) => {
+const todoReducer = (state = [], { type, payload }) => {
 
   switch (type) {
     case ADD_TODO:
-      return addTodo(state, payload);
+      const newTodo = {
+        id: Date.now(),
+        title: payload,
+        completed: false,
+      }
+      return [newTodo, ...state];
     case DELETE_TODO:
-      return deleteTodo(state, payload);
+      return state.filter(todo => todo.id !== payload);
     case EDIT_TODO:
-      return editTodo(state, payload);
+      return state.map(todo => {
+        if (todo.id === payload.id) {
+          return {
+            ...todo,
+            title: payload.text,
+            completed: payload.completed,
+          }
+        } else {
+          return todo;
+        }
+      });
     case TOGGLE_TODO:
-      return toggleTodo(state, payload);
+      return state.map(todo => {
+        if (todo.id === payload.id) {
+          return {
+            ...todo,
+            title: payload.title,
+            completed: payload.completed,
+          }
+        } else {
+          return todo;
+        }
+      });
     case DELETE_COMPLETED_TODOS:
-      return deleteCompletedTodos(state);
+      return state.filter((todo) => !todo.completed);
     case TOGGLE_ALL_TODOS:
-      return toggleAll(state, payload);
+      return state.map((todo) => ({
+        ...todo,
+        completed: payload,
+      }));
     default:
       return state;
   }

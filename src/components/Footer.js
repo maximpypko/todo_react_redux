@@ -1,12 +1,13 @@
 import { connect } from "react-redux";
 import React from "react";
-import { DELETE_COMPLETED_TODOS, CHANGE_FILTER, filters } from "../store/actions/types";
+import { deleteCompletedTodos, changeFilter } from "../store/actions";
+import { filters } from "../utils/enums";
 
-const Footer = ({ state, changeFilter, deleteCompletedTodos }) => {
+const Footer = ({ todos, filter, changeFilter, deleteCompletedTodos }) => {
 
-  const changeClassName = className => state.filterReducer === className ? "selected" : "";
-  const countActiveTodos = state.todoReducer.filter(todo => !todo.completed);
-  const countCompleteTodos = state.todoReducer.length - countActiveTodos.length;
+  const changeClassName = className => filter === className ? "selected" : "";
+  const countActiveTodos = todos.filter(todo => !todo.completed);
+  const countCompleteTodos = todos.length - countActiveTodos.length;
   
   return (
     <footer className="footer">
@@ -64,13 +65,9 @@ const Footer = ({ state, changeFilter, deleteCompletedTodos }) => {
   );
 };
 
-const mapStateToProps = state => ({ state });
+const mapStateToProps = state => ({
+  todos: state.todoReducer,
+  filter: state.filterReducer,
+});
 
-function mapDispatchToProps (dispatch) {
-  return {
-    deleteCompletedTodos: (payload) => dispatch({ type: DELETE_COMPLETED_TODOS, payload }),
-    changeFilter: (payload) => dispatch({ type: CHANGE_FILTER, payload }),
-  }
-};
-
-export default (connect(mapStateToProps, mapDispatchToProps)(React.memo(Footer)))
+export default (connect(mapStateToProps, {deleteCompletedTodos, changeFilter})(React.memo(Footer)))

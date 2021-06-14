@@ -1,17 +1,17 @@
 import { connect } from "react-redux";
 import TodoItem from "./TodoItem";
-import { filters } from "../store/actions/types";
+import { filters } from "../utils/enums";
 
-function ListTodos(props) {
+function ListTodos({todos, filter}) {
 
   const filtersTodos = (() => {
-    if (props.state.filterReducer === filters.ACTIVE) {
-      return props.state.todoReducer.filter(todo => !todo.completed);
+    if (filter === filters.ACTIVE) {
+      return todos.filter(todo => !todo.completed);
     }
-    if (props.state.filterReducer === filters.COMPLETED) {
-      return props.state.todoReducer.filter(todo => todo.completed);
+    if (filter === filters.COMPLETED) {
+      return todos.filter(todo => todo.completed);
     } else {
-      return props.state.todoReducer;
+      return todos;
     }
   })
 
@@ -31,6 +31,9 @@ function ListTodos(props) {
   );
 }
 
-const mapStateToProps = state => ({ state });
+const mapStateToProps = state => ({
+    todos: state.todoReducer,
+    filter: state.filterReducer,
+});
 
 export default connect(mapStateToProps)(ListTodos)

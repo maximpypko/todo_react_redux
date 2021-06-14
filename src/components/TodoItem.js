@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { useState, useRef, useEffect } from "react";
-import { EDIT_TODO, DELETE_TODO, TOGGLE_TODO}  from "../store/actions/types"
+import { deleteTodo, editTodo, toggleTodo}  from "../store/actions"
 
 function TodoItem({id, title, completed, toggleTodo, deleteTodo, editTodo}) {
   const editRef = useRef();
@@ -50,13 +50,4 @@ function TodoItem({id, title, completed, toggleTodo, deleteTodo, editTodo}) {
   );
 }
 
-
-function mapDispatchToProps (dispatch) {
-  return {
-    deleteTodo: (payload) => dispatch({ type: DELETE_TODO, payload }),
-    editTodo: (payload) => dispatch({ type: EDIT_TODO, payload }),
-    toggleTodo: (payload) => dispatch({ type: TOGGLE_TODO, payload}),
-  }
-};
-
-export default connect(null, mapDispatchToProps)(React.memo(TodoItem))
+export default connect(null, {deleteTodo, editTodo, toggleTodo})(React.memo(TodoItem))

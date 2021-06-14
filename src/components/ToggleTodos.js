@@ -1,17 +1,17 @@
 import { connect } from "react-redux";
-import { TOGGLE_ALL_TODOS } from "../store/actions/types";
+import { toggleAllTodos } from "../store/actions";
 
-function ToggleTodos({state, toggleAllTodos }) {
+function ToggleTodos({todos, toggleAllTodos }) {
   
-  const isCompletedAllTodos = state.todoReducer.filter(todo => !todo.completed);
-  
+  const isCompletedAllTodos = todos.filter(todo => !todo.completed);
+
   return (
     <>
       <input
         id="toggle-all"
         className="toggle-all"
         type="checkbox"
-        checked={isCompletedAllTodos.length === 0 && state.todoReducer.length !== 0 ? true : false}
+        checked={isCompletedAllTodos.length === 0 && todos.length !== 0 ? true : false}
         onChange={(e) => {
           toggleAllTodos(e.target.checked)
         }}
@@ -21,12 +21,6 @@ function ToggleTodos({state, toggleAllTodos }) {
   );
 }
 
-const mapStateToProps = state => ({ state });
+const mapStateToProps = state => ({todos: state.todoReducer});
 
-function mapDispatchToProps (dispatch) {
-  return {
-    toggleAllTodos: (payload) => dispatch({ type: TOGGLE_ALL_TODOS, payload }),
-  }
-};
-
-export default (connect(mapStateToProps, mapDispatchToProps)(ToggleTodos))
+export default connect(mapStateToProps, { toggleAllTodos })(ToggleTodos);

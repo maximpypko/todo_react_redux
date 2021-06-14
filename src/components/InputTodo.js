@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { connect } from "react-redux";
-import { ADD_TODO } from "../store/actions/types";
+import { addTodo } from "../store/actions";
 
 function InputTodo({addTodo}) {
 
@@ -27,11 +27,4 @@ function InputTodo({addTodo}) {
   );
 }
 
-const mapStateToProps = state => ({ state });
-
-function mapDispatchToProps (dispatch) {
-  return {
-    addTodo: (payload) => dispatch({ type: ADD_TODO, payload }),
-  } 
-}
-export default connect(mapStateToProps, mapDispatchToProps)(InputTodo);
+export default connect(null, {addTodo})(InputTodo);

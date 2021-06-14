@@ -1,4 +1,5 @@
-import {CHANGE_FILTER, filters} from "../actions/types";
+import { CHANGE_FILTER } from "../actions/types";
+import { filters } from "../../utils/enums";
 
 const filterReducer = (state = filters.ALL, { type, payload }) => {
 
